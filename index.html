@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Programming & Tech Notes</title>
+    <style>
+        /* Reset & base */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f5f7fa;
+        }
+
+        a {
+            color: #2a7ae2;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Header */
+        header {
+            background: #1e40af;
+            color: white;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        /* Navigation */
+        nav#main-nav {
+            background: #2563eb;
+            display: flex;
+            gap: 1.2rem;
+            padding: 0.5rem 1rem;
+            flex-wrap: wrap;
+        }
+
+        nav#main-nav a {
+            color: white;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        nav#main-nav a:hover,
+        nav#main-nav a.active {
+            background-color: #3b82f6;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 250px;
+            margin-left: 1rem;
+        }
+
+        .search-container input[type="search"] {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            width: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .search-container input[type="search"]:focus {
+            width: 100%;
+        }
+
+        /* Hamburger for mobile nav toggle */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            width: 25px;
+            gap: 4px;
+            margin-left: 1rem;
+        }
+
+        .hamburger div {
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+        }
+
+        /* Layout container */
+        .container {
+            display: flex;
+            flex: 1;
+            min-height: calc(100vh - 56px - 40px);
+            /* header + footer approx */
+            background: white;
+        }
+
+        /* Sidebar */
+        aside {
+            width: 260px;
+            background: #e0e7ff;
+            padding: 1rem;
+            overflow-y: auto;
+            border-right: 2px solid #3b82f6;
+        }
+
+        aside h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #1e40af;
+        }
+
+        .subject-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .subject-list>li {
+            margin-bottom: 1rem;
+        }
+
+        .subject-list>li>button {
+            background: none;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            color: #1e40af;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            transition: background-color 0.25s;
+        }
+
+        .subject-list>li>button:hover {
+            background-color: #c7d2fe;
+        }
+
+        .subject-list ul {
+            list-style: disc inside;
+            margin-top: 0.5rem;
+            margin-left: 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+        }
+
+        .subject-list ul.open {
+            max-height: 500px;
+            /* enough to show all */
+        }
+
+        .subject-list ul li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Main content */
+        main {
+            flex: 1;
+            padding: 1.5rem 2rem;
+            overflow-y: auto;
+        }
+
+        main h1 {
+            margin-top: 0;
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: #eff6ff;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgb(59 130 246 / 0.2);
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .card:hover,
+        .card:focus {
+            box-shadow: 0 6px 12px rgb(59 130 246 / 0.35);
+            outline: none;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #1e40af;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        /* Footer */
+        footer {
+            background: #1e40af;
+            color: white;
+            text-align: center;
+            padding: 1rem 1.5rem;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: #93c5fd;
+            margin: 0 0.3rem;
+        }
+
+        /* Social icons (simple) */
+        .social-links a {
+            margin: 0 0.4rem;
+            font-size: 1.3rem;
+            vertical-align: middle;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            nav#main-nav {
+                display: none;
+                flex-direction: column;
+                padding: 0;
+                background: #2563eb;
+                position: absolute;
+                top: 56px;
+                left: 0;
+                right: 0;
+                z-index: 25;
+            }
+
+            nav#main-nav.show {
+                display: flex;
+            }
+
+            nav#main-nav a {
+                padding: 1rem;
+                border-bottom: 1px solid #3b82f6;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            aside {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid #3b82f6;
+                max-height: 200px;
+                overflow-y: auto;
+            }
+
+            main {
+                padding: 1rem 1rem 2rem;
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">ProgTech Notes</div>
+
+        <div class="search-container">
+            <input type="search" id="s333333333333earch-input" placeholder="Search notes..." aria-label="Search notes" />
+        </div>
+
+        <div class="hamburger" id="hamburger" aria-label="Toggle navigation menu" role="button" tabindex="0">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </header>
+
+    <nav id="main-nav" role="navigation" aria-label="Main navigation menu">
+        <a href="#" class="active">Home</a>
+        <a href="#">C</a>
+        <a href="#">C++</a>
+        <a href="#">C#</a>
+        <a href="#">MS-Access</a>
+        <a href="#">MySQL</a>
+        <a href="Python.html">Python</a>
+        <a href="#">Scratch</a>
+        <a href="#">MIT App Inventor</a>
+        <a href="#">About</a>
+    </nav>
+
+    <div class="container">
+
+        <aside id="sidebar">
+            <h2>Subjects & Topics</h2>
+            <ul class="subject-list">
+                <li>
+                    <button aria-expanded="false" aria-controls="topics-c" aria-haspopup="true">C <span
+                            aria-hidden="true">▸</span></button>
+                    <ul id="topics-c" class="topics-list" aria-label="C topics">
+                        <li><a href="#">Basics</a></li>
+                        <li><a href="#">Loops</a></li>
+                        <li><a href="#">Functions</a></li>
+                        <li><a href="#">Pointers</a></li>
+                        <li><a href="#">File I/O</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button aria-expanded="false" aria-controls="topics-cpp" aria-haspopup="true">C++ <span
+                            aria-hidden="true">▸</span></button>
+                    <ul id="topics-cpp" class="topics-list" aria-label="C++ topics">
+                        <li><a href="#">OOP Basics</a></li>
+                        <li><a href="#">Inheritance</a></li>
+                        <li><a href="#">Polymorphism</a></li>
+                        <li><a href="#">Templates</a></li>
+                        <li><a href="#">STL</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button aria-expanded="false" aria-controls="topics-csharp" aria-haspopup="true">C# <span
+                            aria-hidden="true">▸</span></button>
+                    <ul id="topics-csharp" class="topics-list" aria-label="C# topics">
+                        <li><a href="#">Syntax & Basics</a></li>
+                        <li><a href="#">LINQ</a></li>
+                        <li><a href="#">Events & Delegates</a></li>
+                        <li><a href="#">Async Programming</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button aria-expanded="false" aria-controls="topics-csharp" aria-haspopup="true">MS-Access <span
+                            aria-hidden="true">▸</span></button>
+                    <ul id="topics-csharp" class="topics-list" aria-label="C# topics">
+                        <li><a href="#">Syntax & Basics</a></li>
+                        <li><a href="#">LINQ</a></li>
+                        <li><a href="#">Events & Delegates</a></li>
+                        <li><a href="#">Async Programming</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button aria-expanded="false" aria-controls="topics-csharp" aria-haspopup="true">MySQL <span
+                            aria-hidden="true">▸</span></button>
+                    <ul id="topics-csharp" class="topics-list" aria-label="C# topics">
+                        <li><a href="#">Syntax & Basics</a></li>
+                        <li><a href="#">LINQ</a></li>
+                        <li><a href="#">Events & Delegates</a></li>
+                        <li><a href="#">Async Programming</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button aria-expanded="false" aria-controls="topics-csharp" aria-haspopup="true">Python <span
+                            aria-hidden="true">▸</span></button>
+                    <ul id="topics-csharp" class="topics-list" aria-label="C# topics">
+                        <li><a href="#">Syntax & Basics</a></li>
+                        <li><a href="#">LINQ</a></li>
+                        <li><a href="#">Events & Delegates</a></li>
+                        <li><a href="#">Async Programming</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button aria-expanded="false" aria-controls="topics-csharp" aria-haspopup="true">Scratch <span
+                            aria-hidden="true">▸</span></button>
+                    <ul id="topics-csharp" class="topics-list" aria-label="C# topics">
+                        <li><a href="#">Syntax & Basics</a></li>
+                        <li><a href="#">LINQ</a></li>
+                        <li><a href="#">Events & Delegates</a></li>
+                        <li><a href="#">Async Programming</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button aria-expanded="false" aria-controls="topics-csharp" aria-haspopup="true">MIT App Inventor
+                        <span aria-hidden="true">▸</span></button>
+                    <ul id="topics-csharp" class="topics-list" aria-label="C# topics">
+                        <li><a href="#">Syntax & Basics</a></li>
+                        <li><a href="#">LINQ</a></li>
+                        <li><a href="#">Events & Delegates</a></li>
+                        <li><a href="#">Async Programming</a></li>
+                    </ul>
+                </li>
+                <!-- Add more subjects/topics similarly -->
+            </ul>
+        </aside>
+
+        <main>
+            <h1>Welcome to Programming & Tech Notes</h1>
+            <p>Explore comprehensive notes for your favorite programming languages and tools. Click any subject below to
+                start learning.</p>
+
+            <section class="cards" aria-label="Subject overview cards">
+                <article class="card" tabindex="0" role="link" onclick="alert('Go to C notes page')">
+                    <h3>C</h3>
+                    <p>Learn the fundamentals of C programming with examples and exercises.</p>
+                </article>
+                <article class="card" tabindex="0" role="link" onclick="alert('Go to C++ notes page')">
+                    <h3>C++</h3>
+                    <p>Explore object-oriented programming and advanced features in C++.</p>
+                </article>
+                <article class="card" tabindex="0" role="link" onclick="alert('Go to C# notes page')">
+                    <h3>C#</h3>
+                    <p>Discover the power of C# for Windows, web, and mobile development.</p>
+                </article>
+                <article class="card" tabindex="0" role="link" onclick="alert('Go to MS-Access notes page')">
+                    <h3>MS-Access</h3>
+                    <p>Manage databases and create applications with Microsoft Access.</p>
+                </article>
+                <article class="card" tabindex="0" role="link" onclick="alert('Go to MySQL notes page')">
+                    <h3>MySQL</h3>
+                    <p>Master relational databases and SQL queries with MySQL.</p>
+                </article>
+                <article class="card" tabindex="0" role="link" onclick="alert('Go to Python notes page')">
+                    <h3>Python</h3>
+                    <p>Learn Python programming with simple syntax and powerful libraries.</p>
+                </article>
+                <article class="card" tabindex="0" role="link" onclick="alert('Go to Scratch notes page')">
+                    <h3>Scratch</h3>
+                    <p>Get started with visual programming using Scratch blocks.</p>
+                </article>
+                <article class="card" tabindex="0" role="link" onclick="alert('Go to MIT App Inventor notes page')">
+                    <h3>MIT App Inventor</h3>
+                    <p>Create mobile apps easily with drag-and-drop components.</p>
+                </article>
+            </section>
+        </main>
+
+    </div>
+
+    <footer>
+        <p>Contact: <a href="mailto:rpd.kit@gmail.com">rpd.kit@gmail.com</a> | <a href="#">About</a> | <a
+                href="#">Resources</a></p>
+        <p>&copy; 2025 ProgTech Notes. All rights reserved.</p>
+        <p class="social-links" aria-label="Social media links">
+            <a href="#" aria-label="Facebook" title="Facebook">Facebook</a>
+            <a href="#" aria-label="Twitter" title="Twitter">Twitter</a>
+            <a href="#" aria-label="LinkedIn" title="LinkedIn">LinkedIn</a>
+        </p>
+    </footer>
+
+    <script>
+        // Sidebar expandable/collapse functionality
+        document.querySelectorAll('.subject-list > li > button').forEach(button => {
+            button.addEventListener('click', () => {
+                const expanded = button.getAttribute('aria-expanded') === 'true';
+                const list = button.nextElementSibling;
+
+                button.setAttribute('aria-expanded', !expanded);
+                if (!expanded) {
+                    list.classList.add('open');
+                    button.querySelector('span').textContent = '▾';
+                } else {
+                    list.classList.remove('open');
+                    button.querySelector('span').textContent = '▸';
+                }
+            });
+        });
+
+        // Hamburger toggle for nav menu on small screens
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('main-nav');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
+        });
+
+        // Simple search functionality alert (expand as needed)
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('keypress', e => {
+            if (e.key === 'Enter') {
+                alert(`Searching for: "${searchInput.value.trim()}"`);
+                // Implement search logic here
+            }
+        });
+    </script>
+
+</body>
+
+</html>
